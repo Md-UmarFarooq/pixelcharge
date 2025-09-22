@@ -1,0 +1,409 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.root {
+    display: flex;
+    flex-direction: column;
+    gap: 3vh;
+    min-height: 100vh;
+    width: 100vw;
+    background: #f9fafb;
+}
+
+.header {
+    height: 10vh; 
+    background: #fff;
+    color: #111827;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1.5vw; 
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03); 
+}
+
+.header-logo-container {
+    width: 20%; 
+    min-width: 60px;
+    max-width: 160px; 
+}
+
+.header-logo {
+    width: 100%;
+    height: auto;
+}
+
+.header-tagline {
+    display: flex;
+    justify-content: center;
+    width: 50%;
+    font-size: clamp(0.9rem, 1.5vw, 1.2rem); 
+    text-align: center;
+}
+
+.header-process {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5vw; 
+    width: 15%;
+    height: 5vh; 
+    border-radius: 6px; 
+    background: #f9fafb;
+    font-size: clamp(0.8rem, 1.1vw, 1.1rem); 
+}
+
+.header-process:hover {
+    cursor: pointer;
+    background: #f0f4f8;
+    border: 1px solid #e5e7eb;
+}
+
+.mainContent-container{
+    min-height: 80vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.mainContent{
+    min-height: 70vh;
+    min-width: 60vw;
+    border: 2px dashed #9ca3af;
+    border-radius: 12px;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5vh;
+    justify-content: center;
+    align-items: center;
+    color: #9ca3af;
+    transition: all 0.2s ease-in-out;
+}
+
+.mainContent.transform{
+    width: 60vw;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    background: #f9fafb;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    color: #111827;
+    display: block;
+    overflow-x: scroll;
+}
+
+
+
+.mainContent.drag:hover {
+    cursor: pointer;
+    border-color: #2563eb;
+    background: #f3f4f6;
+    color: #2563eb;
+}
+
+.mainContent-placeholder-1{
+    display: flex;
+}
+
+.mainContent-placeholder-1-btn {
+    display: flex;
+    gap: 0.3vw;
+    background: #2563eb;
+    color: #ffffff;
+    font-size: 1.5rem;
+    font-weight: 500;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  }
+  
+  .mainContent-placeholder-1-btn:hover {
+    background: #1e40af;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  }
+  
+  .mainContent-placeholder-1-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+
+.mainContent-placeholder-2{
+    margin-top: 3vh;
+    color: #6b7280;
+    font-size: 1.3rem;
+}
+
+.mainContent-placeholder-3{
+    color: #6b7280;
+    font-size: 1.3rem;
+}
+
+.data-heading-row{
+    height: 7vh;
+    display: flex;
+    padding: 0.7rem 0rem;
+    gap: 1vw;
+    border-bottom: 2px solid #e5e7eb;
+    font-weight: 600;
+    font-size: clamp(0.85rem, 1.2vw, 1.1rem);
+    color: #374151;
+    border-radius: 8px 8px 0 0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    flex-shrink: 0;
+}
+
+.data-heading-cell{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 10vw;
+    flex-shrink: 0;
+}
+
+.data-heading-sno{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 3vw;
+}
+
+.data-row{
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 1vw;
+    background-color: #ffffff;
+    padding: 0.3rem 0rem;
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 0.9rem;
+    color: #374151;
+    font-size: clamp(0.85rem, 1vw, 1.1rem);
+    flex-shrink: 0;
+}
+
+.data-row>div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3vw;
+}
+
+.data-cell{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 10vw;
+    flex-shrink: 0;
+}
+
+
+
+.data-sno{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 3vw;
+    font-size: clamp(0.85rem, 1.2vw, 1.1rem);
+    font-weight: bold;
+}
+
+.data-pixels {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #f8f9fa;
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: 1px solid #e9ecef;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 0.85rem;
+    color: #495057;
+    width: 6vw;
+    max-width: 80px;
+    min-width: 50px;
+    white-space: nowrap; 
+}
+
+.data-pixels::-webkit-outer-spin-button,
+.data-pixels::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.data-pixels:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15);
+    outline: none;
+}
+
+.data-type {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #f8f9fa;
+    padding: 5px 10px;
+    border-radius: 4px;
+    border: 1px solid #e9ecef;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    color: #495057;
+    width: clamp(60px, 5vw, 100px); 
+    cursor: pointer;
+    appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    position: relative;
+    text-align: center;
+    font-size: clamp(0.7rem, 0.9vw, 0.9rem); 
+}
+.data-type:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15);
+    outline: none;
+}
+
+.data-type::-ms-expand {
+    display: none;
+}
+
+.data-type::after {
+    content: '▼';
+    position: absolute;
+    right: 8px;
+    pointer-events: none;
+    font-size: 0.6rem;
+    color: #495057;
+}
+
+.data-convert {
+    background-color: #3b82f6;
+    color: #ffffff;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 0.45rem 1rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-width: 3vw;
+
+}
+
+.data-convert:hover {
+    background-color: #2563eb;
+    box-shadow: 0 3px 8px rgba(59, 130, 246, 0.2);
+}
+
+.data-convert:active {
+    background-color: #1d4ed8;
+    transform: translateY(1px);
+}
+
+.data-copy {
+    background-color: #198754;
+    color: #ffffff;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 0.45rem 1rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-width: 3vw;
+}
+
+.data-copy:hover {
+    background-color: #157347;
+    box-shadow: 0 3px 8px rgba(25, 135, 84, 0.25);
+}
+
+.data-copy:active {
+    background-color: #0f5132;
+    transform: translateY(1px);
+}
+
+.data-download {
+    background-color: #212121;
+    color: #ffffff;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 0.45rem 1rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-width: 3vw;
+}
+
+.data-download:hover {
+    background-color: #1a1a1a;
+    box-shadow: 0 3px 8px rgba(33, 33, 33, 0.25);
+}
+
+.data-download:active {
+    background-color: #0f0f0f;
+    transform: translateY(1px);
+}
+
+
+
+
+
+
+
+@media (max-width: 768px) {
+    .header {
+        height: 8vh; 
+        flex-direction: column;
+        padding: 0.5vw;
+        gap: 0.5vh;
+    }
+    .header-logo-container {
+        width: 25%;
+    }
+    .header-tagline {
+        width: 100%;
+        font-size: clamp(0.6rem, 3vw, 0.8rem); 
+    }
+    .header-process {
+        width: 50%;
+        height: 4vh; 
+        font-size: clamp(0.6rem, 1vw, 0.8rem);
+    }
+    .mainContent {
+        min-width:90vw; 
+        min-height:50vh; 
+        border-radius:8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .mainContent {
+        min-width: 95vw; 
+        min-height: 40vh; 
+        border-radius: 6px; 
+    }
+}

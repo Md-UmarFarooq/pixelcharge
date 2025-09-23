@@ -60,65 +60,65 @@ var hideInsideBoxElements=()=>{
     }
 }
 
+var rows=[];
 
 fileInput.addEventListener("change",(e)=>{
     hideInsideBoxElements();
     var files=e.target.files;
     mainContent.classList.remove("drag");
     mainContent.classList.toggle("transform");
-
-    fillDataHeadings();
+    var table=document.createElement("div");
+    table.classList.add("data-table");
+    mainContent.append(table);
+    fillDataHeadings(table);
     for(var i=0;i<files.length;i++){
-        createRow(files[i].name,i);
+        createRow(table,files[i].name,i);
     }
 
 });
 
 
-var fillDataHeadings=()=>{
+var fillDataHeadings=(container)=>{
     var columns=["Sno","Name","Shrink Pixels?","Convert type"];
-
-    var row=document.createElement("div");
-    row.classList.add("data-heading-row");
-
-    for(var i=0;i<columns.length;i++){
+    for(var i=0;i<7;i++){
         var cell=document.createElement("div");
+        cell.classList.add("data-table-header")
+        container.append(cell);
+        if(!columns[i]){continue;}
         cell.innerText=columns[i];
-        cell.classList.add("data-heading-cell");
-        if(i==0){
-            cell.classList.add("data-heading-sno");
-        }
-        row.append(cell);
     }
-    mainContent.append(row);
-
+    
 }
 
-var createRow=(fname,k)=>{
-    var row=document.createElement("div");
-    row.classList.add("data-row");
+var createRow=(container,fname,k)=>{
 
     var sno=document.createElement("div");
     sno.innerText=(k+1)+".";
-    sno.classList.add("data-sno");
+    sno.classList.add("data-table-normal");
+    sno.classList.add("data-table-flex");
+    sno.classList.add("data-table-sno")
 
     var name=document.createElement("div");
     name.innerText=fname;
-    name.classList.add("data-cell");
+    name.classList.add("data-table-normal");
+    name.classList.add("data-table-flex");
 
     var width=document.createElement("input");
     width.type="number";
     width.value="1920";
-    width.classList.add("data-pixels");
+    width.classList.add("data-table-pixel");
     var height=document.createElement("input");
     height.type="number";
     height.value="1080";
-    height.classList.add("data-pixels");
+    height.classList.add("data-table-pixel");
     var pixels=document.createElement("div");
-    pixels.classList.add("data-cell");
+    pixels.classList.add("data-table-normal");
+    pixels.classList.add("data-table-pixels");
     pixels.append(width);
     pixels.append(height);
 
+    var typeContainer=document.createElement("div");
+    typeContainer.classList.add("data-table-flex");
     var rgb=document.createElement("option");
     rgb.innerText="RGB";
     var hsl=document.createElement("option");
@@ -126,37 +126,42 @@ var createRow=(fname,k)=>{
     var hex=document.createElement("option");
     hex.innerText="HEX";
     var type=document.createElement("select");
-    type.classList.add("data-cell");
-    type.classList.add("data-type");
+    type.classList.add("data-table-normal");
+    type.classList.add("data-table-type");
     type.append(rgb);
     type.append(hsl);
     type.append(hex);
+    typeContainer.append(type);
 
+    var convertContainer=document.createElement("div");
     var convert=document.createElement("button");
     convert.innerText="Convert";
-    convert.classList.add("data-cell");
-    convert.classList.add("data-convert");
+    convert.classList.add("data-table-normal");
+    convert.classList.add("data-table-convert");
+    convertContainer.append(convert);
 
+    var copyContainer=document.createElement("div");
     var copy=document.createElement("button");
     copy.innerText="Copy";
-    copy.classList.add("data-cell");
-    copy.classList.add("data-copy");
+    copy.classList.add("data-table-normal");
+    copy.classList.add("data-table-copy");
+    copyContainer.append(copy);
 
+    var downloadContainer=document.createElement("div");
     var download=document.createElement("button");
     download.innerText="Downlaod";
-    download.classList.add("data-cell");
-    download.classList.add("data-download");
 
-    row.append(sno);
-    row.append(name);
-    row.append(pixels);
-    row.append(type);
-    row.append(convert);
-    row.append(copy);
-    row.append(download);
+    download.classList.add("data-table-download");
+    downloadContainer.append(download);
 
+    container.append(sno);
+    container.append(name);
+    container.append(pixels);
+    container.append(typeContainer);
+    container.append(convertContainer);
+    container.append(copyContainer);
+    container.append(downloadContainer);
 
-    mainContent.append(row);
 
 }
 

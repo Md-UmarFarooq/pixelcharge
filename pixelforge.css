@@ -206,6 +206,11 @@
     border-bottom: 1px solid #e5e7eb;
 }
 
+.data-table-name{
+    width: (30px, 2.93vw, 50px);
+    overflow-x: auto;
+}
+
 .data-table-sno{
     font-weight: bolder;
 }

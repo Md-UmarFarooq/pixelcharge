@@ -102,6 +102,7 @@ var createRow=(container,fname,k)=>{
     name.innerText=fname;
     name.classList.add("data-table-normal");
     name.classList.add("data-table-flex");
+    name.classList.add("data-table-name");
 
     var width=document.createElement("input");
     width.type="number";

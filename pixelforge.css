@@ -178,7 +178,6 @@
     clamp(70px, 7.32vw, 120px)    
     clamp(70px, 7.32vw, 120px)    
     clamp(70px, 7.32vw, 120px);
-    border-bottom: 1px solid #e5e7eb;
 }
 
 .data-table>div{
@@ -207,8 +206,17 @@
 }
 
 .data-table-name{
-    width: (30px, 2.93vw, 50px);
-    overflow-x: auto;
+    width: clamp(120px, 11.27vw, 180px);/*clamp(100px, 10.25vw, 160px)*/ 
+    overflow: hidden;
+    text-align: left;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.data-table-name:hover{
+    cursor: pointer;
 }
 
 .data-table-sno{

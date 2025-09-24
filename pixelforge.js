@@ -95,14 +95,14 @@ var createRow=(container,fname,k)=>{
     var sno=document.createElement("div");
     sno.innerText=(k+1)+".";
     sno.classList.add("data-table-normal");
-    sno.classList.add("data-table-flex");
     sno.classList.add("data-table-sno")
 
     var name=document.createElement("div");
     name.innerText=fname;
     name.classList.add("data-table-normal");
-    name.classList.add("data-table-flex");
     name.classList.add("data-table-name");
+    name.style.justifyContent="flex-start";
+    name.title = fname;
 
     var width=document.createElement("input");
     width.type="number";
@@ -119,7 +119,7 @@ var createRow=(container,fname,k)=>{
     pixels.append(height);
 
     var typeContainer=document.createElement("div");
-    typeContainer.classList.add("data-table-flex");
+    typeContainer.classList.add("data-table-normal");
     var rgb=document.createElement("option");
     rgb.innerText="RGB";
     var hsl=document.createElement("option");
@@ -135,6 +135,7 @@ var createRow=(container,fname,k)=>{
     typeContainer.append(type);
 
     var convertContainer=document.createElement("div");
+    convertContainer.classList.add("data-table-normal");
     var convert=document.createElement("button");
     convert.innerText="Convert";
     convert.classList.add("data-table-normal");
@@ -142,6 +143,7 @@ var createRow=(container,fname,k)=>{
     convertContainer.append(convert);
 
     var copyContainer=document.createElement("div");
+    copyContainer.classList.add("data-table-normal");
     var copy=document.createElement("button");
     copy.innerText="Copy";
     copy.classList.add("data-table-normal");
@@ -149,6 +151,7 @@ var createRow=(container,fname,k)=>{
     copyContainer.append(copy);
 
     var downloadContainer=document.createElement("div");
+    downloadContainer.classList.add("data-table-normal");
     var download=document.createElement("button");
     download.innerText="Downlaod";
 

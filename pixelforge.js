@@ -1,9 +1,11 @@
 //HEADER TAGLINE
 var headerTagline = document.querySelector(".header-tagline");
 var headerProcess=document.querySelector(".header-process");
+var mainContentContainer=document.querySelector(".mainContent-container");
 var mainContent=document.querySelector(".mainContent");
 var mainContentPlaceholder1Btn=document.querySelector(".mainContent-placeholder-1-btn");
 var fileInput=document.querySelector(".mainContent-fileInput");
+var root=document.querySelector(".root");
 
 
 const sleep=(delay)=>new Promise((resolve)=>setTimeout(resolve, delay));
@@ -22,9 +24,9 @@ async function write() {
             insert+=text[i];
             headerTagline.innerText=insert +(i<text.length-1?"|":"");
             if(text[i]=== " ")headerTagline.innerText+="\xa0";
-            await sleep(150); // Slower typing
+            await sleep(150); 
         }
-        await sleep(3000); // Longer pause
+        await sleep(3000); 
         z=(z + 1)% texts.length;
     }
 }
@@ -60,63 +62,192 @@ var hideInsideBoxElements=()=>{
     }
 }
 
+var showInsideBoxElements=()=>{
+    var insideBoxElements=mainContent.children;
+    for(var i=0;i<insideBoxElements.length;i++){
+        insideBoxElements[i].style.display="flex";
+    }
+}
+
 var rows=[];
 
+mainContentPlaceholder1Btn.addEventListener("click",()=>{
+    fileInput.value="";
+})
+
 fileInput.addEventListener("change",(e)=>{
+    handleSelectedFiles(e.target.files);
+})
+
+mainContent.addEventListener("dragover",(e)=>{
+    e.preventDefault(); 
+    mainContent.classList.add("drag-hover"); 
+});
+
+mainContent.addEventListener("dragleave",(e)=>{
+    mainContent.classList.remove("drag-hover");
+});
+
+mainContent.addEventListener("drop",(e)=>{
+    e.preventDefault(); 
+    if(e.dataTransfer.files.length==0){return;}
+    var existingTable=mainContent.querySelector(".data-table");
+    if(existingTable){
+        return;
+    }
+    mainContent.classList.remove("drag-hover");
+    const files = e.dataTransfer.files;
+    if (files.length > 0) {
+        handleSelectedFiles(files); 
+    }
+});
+
+var handleSelectedFiles=async(files)=>{
+    if(files.length>10){alert("You can batch only upto 10 files!");return;}
+    if(!checkFiles(files)){alert("Please select image files only!");return;}
     hideInsideBoxElements();
-    var files=e.target.files;
     mainContent.classList.remove("drag");
     mainContent.classList.toggle("transform");
     var table=document.createElement("div");
     table.classList.add("data-table");
     mainContent.append(table);
     fillDataHeadings(table);
+    await loadFiles(table,files);
+    fillDataHeadings(table);
     for(var i=0;i<files.length;i++){
-        createRow(table,files[i].name,i);
+        await createRow(table,files[i],i);
     }
+     createConvertQueue();
+     appendBackContainer();
+     appendConvertAllButton();
+}
 
-});
 
+var appendBackContainer=async()=>{
+    var container=document.createElement("div");
+    var button=document.createElement("button");
+    button.innerText="/ Back";
+    container.classList.add("back-container");
+    button.classList.add("back");
+    container.append(button);
+    await root.append(container);
+    var back = document.querySelector(".back");
+    back.addEventListener("click",()=>{
+        var table=document.querySelector(".data-table");
+        table.remove();
+        showInsideBoxElements();
+        mainContent.classList.remove("transform");
+        mainContent.classList.add("drag");
+        container.remove();
+        var convertAllContainer=document.querySelector(".convertAll-container");
+        convertAllContainer.remove();
+    })
+}
+
+var appendConvertAllButton=async()=>{
+    var container=document.createElement("div");
+    var button=document.createElement("button");
+    button.innerText="Convert All";
+    container.classList.add("convertAll-container");
+    button.classList.add("convertAll");
+    container.append(button);
+    root.append(container);
+}
+
+var checkFiles=(files)=>{
+    for(let i = 0;i<files.length;i++){
+        const file=files[i];
+        if(file.type.startsWith("image/")){
+            continue;
+        }
+        const ext=file.name.split('.').pop().toLowerCase();
+        if (["jpg", "jpeg", "png", "gif", "bmp", "webp"].includes(ext)){
+            continue;
+        }else{
+            return false;
+        }
+    }
+    return true;
+}
+
+
+
+var loadFiles=async(container,files)=>{
+    for(var i=0;i<files.length;i++){
+        var row=document.createElement("div");
+        row.classList.add("data-table-row-loader");
+        row.classList.add("data-table-normal");
+        var loader=document.createElement("div");
+        loader.classList.add("name-loader");
+        var loaderBar=document.createElement("div");
+        loaderBar.classList.add("loader-bar");
+        loader.append(loaderBar);
+        row.append(loader);
+        container.append(row);
+    }
+        await new Promise(resolve => setTimeout(resolve, 1700));
+        container.innerHTML = "";
+}
 
 var fillDataHeadings=(container)=>{
     var columns=["Sno","Name","Shrink Pixels?","Convert type"];
+    var row=document.createElement("div");
+    row.classList.add("data-table-row");
+    row.classList.add("data-table-header-row");
     for(var i=0;i<7;i++){
         var cell=document.createElement("div");
-        cell.classList.add("data-table-header")
-        container.append(cell);
+        row.append(cell);
         if(!columns[i]){continue;}
         cell.innerText=columns[i];
     }
-    
+    container.append(row);
 }
 
-var createRow=(container,fname,k)=>{
+var getImageDimensions=(file)=>{
+    return new Promise((resolve,reject)=>{
+        if(!file.type.startsWith("image/")){
+            return resolve({imgWidth:1920,imgHeight:1080});
+        }
+        var image=new Image();
+        image.onload=()=>{
+            resolve({imgWidth:image.naturalWidth,imgHeight:image.naturalHeight});
+            URL.revokeObjectURL(image.src);
+        }
+        image.onerror=reject;
+        image.src = URL.createObjectURL(file);
+    })
+}
 
+var createRow=async (container,file,k)=>{
+    var {imgWidth,imgHeight}=await getImageDimensions(file);
+    var row=document.createElement("div");
+    row.classList.add("data-table-normal");
+    row.classList.add("data-table-row");
     var sno=document.createElement("div");
     sno.innerText=(k+1)+".";
-    sno.classList.add("data-table-normal");
-    sno.classList.add("data-table-sno")
+    sno.style.fontWeight="bolder"
+    row.append(sno);
 
     var name=document.createElement("div");
-    name.innerText=fname;
-    name.classList.add("data-table-normal");
+    name.innerText=file.name;
     name.classList.add("data-table-name");
     name.style.justifyContent="flex-start";
-    name.title = fname;
+    name.title = file.name;
+    row.append(name);
 
     var width=document.createElement("input");
     width.type="number";
-    width.value="1920";
+    width.value=imgWidth;
     width.classList.add("data-table-pixel");
     var height=document.createElement("input");
     height.type="number";
-    height.value="1080";
+    height.value=imgHeight;
     height.classList.add("data-table-pixel");
     var pixels=document.createElement("div");
-    pixels.classList.add("data-table-normal");
     pixels.classList.add("data-table-pixels");
     pixels.append(width);
     pixels.append(height);
+    row.append(pixels);
 
     var typeContainer=document.createElement("div");
     typeContainer.classList.add("data-table-normal");
@@ -127,48 +258,63 @@ var createRow=(container,fname,k)=>{
     var hex=document.createElement("option");
     hex.innerText="HEX";
     var type=document.createElement("select");
-    type.classList.add("data-table-normal");
     type.classList.add("data-table-type");
     type.append(rgb);
     type.append(hsl);
     type.append(hex);
     typeContainer.append(type);
+    row.append(typeContainer);
 
     var convertContainer=document.createElement("div");
-    convertContainer.classList.add("data-table-normal");
     var convert=document.createElement("button");
     convert.innerText="Convert";
-    convert.classList.add("data-table-normal");
     convert.classList.add("data-table-convert");
     convertContainer.append(convert);
+    row.append(convertContainer);
 
     var copyContainer=document.createElement("div");
-    copyContainer.classList.add("data-table-normal");
-    var copy=document.createElement("button");
-    copy.innerText="Copy";
-    copy.classList.add("data-table-normal");
-    copy.classList.add("data-table-copy");
-    copyContainer.append(copy);
+    row.append(copyContainer);
 
     var downloadContainer=document.createElement("div");
-    downloadContainer.classList.add("data-table-normal");
-    var download=document.createElement("button");
-    download.innerText="Downlaod";
-
-    download.classList.add("data-table-download");
-    downloadContainer.append(download);
-
-    container.append(sno);
-    container.append(name);
-    container.append(pixels);
-    container.append(typeContainer);
-    container.append(convertContainer);
-    container.append(copyContainer);
-    container.append(downloadContainer);
-
-
+    row.append(downloadContainer);
+    container.append(row);
 }
 
 
+let clicked=new Set();
+
+var createConvertQueue=()=>{
+var convertButtons=document.querySelectorAll(".data-table-convert");
+
+var convertQueue=[];
+
+for(let i=0;i<convertButtons.length;i++){
+    convertButtons[i].addEventListener("click",()=>{
+        if(clicked.has(i)){return;}
+        clicked.add(i);
+        convertQueue.push(i);
+        for(let j=0;j<convertQueue.length;j++){
+            console.log(convertQueue[j]);
+        } 
+    });
+}
+}
+
+/*
 
 
+
+
+var copy=document.createElement("button");
+    copy.innerText="Copy";
+    copy.classList.add("data-table-copy");
+    copyContainer.append(copy);
+
+
+var download=document.createElement("button");
+download.classList.add("data-table-download");
+    download.innerText="Downlaod";
+    downloadContainer.append(download);
+
+
+*/
